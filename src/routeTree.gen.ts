@@ -9,7 +9,6 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as StatesRouteImport } from './routes/states'
 import { Route as RecommendationRouteImport } from './routes/recommendation'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as ExploreRouteImport } from './routes/explore'
@@ -18,13 +17,9 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AssistantRouteImport } from './routes/assistant'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as StatesIndexRouteImport } from './routes/states.index'
 import { Route as StatesStateIdRouteImport } from './routes/states.$stateId'
 
-const StatesRoute = StatesRouteImport.update({
-  id: '/states',
-  path: '/states',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const RecommendationRoute = RecommendationRouteImport.update({
   id: '/recommendation',
   path: '/recommendation',
@@ -65,10 +60,15 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const StatesIndexRoute = StatesIndexRouteImport.update({
+  id: '/states/',
+  path: '/states/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const StatesStateIdRoute = StatesStateIdRouteImport.update({
-  id: '/$stateId',
-  path: '/$stateId',
-  getParentRoute: () => StatesRoute,
+  id: '/states/$stateId',
+  path: '/states/$stateId',
+  getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -80,8 +80,8 @@ export interface FileRoutesByFullPath {
   '/explore': typeof ExploreRoute
   '/profile': typeof ProfileRoute
   '/recommendation': typeof RecommendationRoute
-  '/states': typeof StatesRouteWithChildren
   '/states/$stateId': typeof StatesStateIdRoute
+  '/states/': typeof StatesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -92,8 +92,8 @@ export interface FileRoutesByTo {
   '/explore': typeof ExploreRoute
   '/profile': typeof ProfileRoute
   '/recommendation': typeof RecommendationRoute
-  '/states': typeof StatesRouteWithChildren
   '/states/$stateId': typeof StatesStateIdRoute
+  '/states': typeof StatesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -105,8 +105,8 @@ export interface FileRoutesById {
   '/explore': typeof ExploreRoute
   '/profile': typeof ProfileRoute
   '/recommendation': typeof RecommendationRoute
-  '/states': typeof StatesRouteWithChildren
   '/states/$stateId': typeof StatesStateIdRoute
+  '/states/': typeof StatesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -119,8 +119,8 @@ export interface FileRouteTypes {
     | '/explore'
     | '/profile'
     | '/recommendation'
-    | '/states'
     | '/states/$stateId'
+    | '/states/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -131,8 +131,8 @@ export interface FileRouteTypes {
     | '/explore'
     | '/profile'
     | '/recommendation'
-    | '/states'
     | '/states/$stateId'
+    | '/states'
   id:
     | '__root__'
     | '/'
@@ -143,8 +143,8 @@ export interface FileRouteTypes {
     | '/explore'
     | '/profile'
     | '/recommendation'
-    | '/states'
     | '/states/$stateId'
+    | '/states/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -156,18 +156,12 @@ export interface RootRouteChildren {
   ExploreRoute: typeof ExploreRoute
   ProfileRoute: typeof ProfileRoute
   RecommendationRoute: typeof RecommendationRoute
-  StatesRoute: typeof StatesRouteWithChildren
+  StatesStateIdRoute: typeof StatesStateIdRoute
+  StatesIndexRoute: typeof StatesIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/states': {
-      id: '/states'
-      path: '/states'
-      fullPath: '/states'
-      preLoaderRoute: typeof StatesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/recommendation': {
       id: '/recommendation'
       path: '/recommendation'
@@ -224,26 +218,22 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/states/': {
+      id: '/states/'
+      path: '/states'
+      fullPath: '/states/'
+      preLoaderRoute: typeof StatesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/states/$stateId': {
       id: '/states/$stateId'
-      path: '/$stateId'
+      path: '/states/$stateId'
       fullPath: '/states/$stateId'
       preLoaderRoute: typeof StatesStateIdRouteImport
-      parentRoute: typeof StatesRoute
+      parentRoute: typeof rootRouteImport
     }
   }
 }
-
-interface StatesRouteChildren {
-  StatesStateIdRoute: typeof StatesStateIdRoute
-}
-
-const StatesRouteChildren: StatesRouteChildren = {
-  StatesStateIdRoute: StatesStateIdRoute,
-}
-
-const StatesRouteWithChildren =
-  StatesRoute._addFileChildren(StatesRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
@@ -254,7 +244,8 @@ const rootRouteChildren: RootRouteChildren = {
   ExploreRoute: ExploreRoute,
   ProfileRoute: ProfileRoute,
   RecommendationRoute: RecommendationRoute,
-  StatesRoute: StatesRouteWithChildren,
+  StatesStateIdRoute: StatesStateIdRoute,
+  StatesIndexRoute: StatesIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
