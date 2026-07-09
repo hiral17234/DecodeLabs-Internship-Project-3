@@ -1,6 +1,6 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { motion } from "framer-motion";
-import { ArrowLeft, MapPin, Calendar, Wallet, Clock, Utensils, PartyPopper, Landmark, TreePine, Mountain, Waves, Sparkles, Camera, Award, Flame, Building2, Shirt, Languages, Bookmark, Share2, Heart, Check } from "lucide-react";
+import { ArrowLeft, MapPin, Clock, Utensils, Landmark as _L, TreePine, Mountain, Waves, Sparkles, Camera, Award, Flame, Building2, Bookmark, Heart, Check } from "lucide-react";
 import { getState, STATES, type State } from "@/lib/states-data";
 import { useWishlist } from "@/lib/wishlist-context";
 import { toast } from "sonner";
