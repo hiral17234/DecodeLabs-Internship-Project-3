@@ -229,7 +229,7 @@ The objective of **Know Your India** is to promote tourism across India by helpi
 
 # 👩‍💻 Developer
 
-**Gauri**
+**Hiral**
 
 B.Tech – Mathematics & Computing  
 Madhav Institute of Technology and Science (MITS), Gwalior
