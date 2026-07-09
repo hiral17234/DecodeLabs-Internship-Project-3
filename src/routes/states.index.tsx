@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { STATES } from "@/lib/states-data";
 import { StateCard } from "@/components/StateCard";
 
-export const Route = createFileRoute("/states")({ component: StatesList });
+export const Route = createFileRoute("/states/")({ component: StatesList });
 
 function StatesList() {
   return (
