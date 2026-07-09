@@ -66,9 +66,9 @@ const StatesIndexRoute = StatesIndexRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const StatesStateIdRoute = StatesStateIdRouteImport.update({
-  id: '/$stateId',
-  path: '/$stateId',
-  getParentRoute: () => StatesRoute,
+  id: '/states/$stateId',
+  path: '/states/$stateId',
+  getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -156,6 +156,7 @@ export interface RootRouteChildren {
   ExploreRoute: typeof ExploreRoute
   ProfileRoute: typeof ProfileRoute
   RecommendationRoute: typeof RecommendationRoute
+  StatesStateIdRoute: typeof StatesStateIdRoute
   StatesIndexRoute: typeof StatesIndexRoute
 }
 
@@ -226,10 +227,10 @@ declare module '@tanstack/react-router' {
     }
     '/states/$stateId': {
       id: '/states/$stateId'
-      path: '/$stateId'
+      path: '/states/$stateId'
       fullPath: '/states/$stateId'
       preLoaderRoute: typeof StatesStateIdRouteImport
-      parentRoute: typeof StatesRoute
+      parentRoute: typeof rootRouteImport
     }
   }
 }
@@ -243,18 +244,9 @@ const rootRouteChildren: RootRouteChildren = {
   ExploreRoute: ExploreRoute,
   ProfileRoute: ProfileRoute,
   RecommendationRoute: RecommendationRoute,
+  StatesStateIdRoute: StatesStateIdRoute,
   StatesIndexRoute: StatesIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
